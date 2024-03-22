@@ -1,2 +1,2 @@
-require("jasonhli.core.keymaps")
-require("jasonhli.core.options")
+require("jasonli108.core.keymaps")
+require("jasonli108.core.options")

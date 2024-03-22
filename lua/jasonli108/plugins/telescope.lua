@@ -5,6 +5,7 @@ return {
     "nvim-lua/plenary.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     "nvim-tree/nvim-web-devicons",
+    { "nvim-telescope/telescope-ui-select.nvim" },
   },
   config = function()
     local telescope = require("telescope")
@@ -21,16 +22,23 @@ return {
           },
         },
       },
+      extensions = {
+        ["ui-select"] = {
+          require("telescope.themes").get_dropdown(),
+        },
+      },
     })
 
     telescope.load_extension("fzf")
+    telescope.load_extension("ui-select")
 
     -- set keymaps
     local keymap = vim.keymap -- for conciseness
-
-    keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
-    keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
-    keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
-    keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
+    local builtin = require("telescope.builtin")
+    keymap.set("n", "<leader>sf", builtin.find_files, { desc = "Fuzzy find files in cwd" })
+    keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = "Fuzzy find recent files" })
+    keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "Find string in cwd" })
+    keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "Find string under cursor in cwd" })
+    keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
   end,
 }
