@@ -7,6 +7,7 @@ return {
 
     conform.setup({
       formatters_by_ft = {
+        java = { "google-java-format" },
         javascript = { "prettier" },
         typescript = { "prettier" },
         javascriptreact = { "prettier" },
@@ -20,6 +21,7 @@ return {
         graphql = { "prettier" },
         lua = { "stylua" },
         python = { "isort", "black" },
+        ["*"] = { "codespell" },
       },
       format_on_save = {
         lsp_fallback = true,
