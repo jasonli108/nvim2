@@ -11,10 +11,11 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({ { import = "jasonli108.plugins" }, { import = "jasonli108.plugins.lsp" } }, {
-  install = {
-    colorscheme = { "catppuccin" },
-  },
+require("lazy").setup({
+  { "catppuccin/nvim" },
+  { import = "jasonli108.plugins" },
+  { import = "jasonli108.plugins.lsp" },
+}, {
   checker = {
     enabled = true,
     notify = false,
