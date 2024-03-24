@@ -14,6 +14,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   { "catppuccin/nvim" },
   { import = "jasonli108.plugins" },
+  { import = "jasonli108.plugins.dap" },
+  { import = "jasonli108.plugins.lang" },
   { import = "jasonli108.plugins.lsp" },
 }, {
   checker = {

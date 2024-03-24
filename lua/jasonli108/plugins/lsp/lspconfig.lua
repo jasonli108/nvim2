@@ -131,12 +131,6 @@ return {
       filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
     })
 
-    -- configure java server
-    lspconfig["jdtls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-
     -- configure python server
     lspconfig["pyright"].setup({
       capabilities = capabilities,

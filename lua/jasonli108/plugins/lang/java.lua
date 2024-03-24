@@ -8,7 +8,7 @@ function get_opts(name)
     return {}
   end
 
-  local Plugin = require("lazy.core.config")
+  local Plugin = require("lazy.core.plugin")
   return Plugin.values(plugin, "opts", false)
 end
 
