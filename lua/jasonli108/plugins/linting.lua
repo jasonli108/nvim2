@@ -1,5 +1,6 @@
 return {
   "mfussenegger/nvim-lint",
+  optional = true,
   lazy = true,
   event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
   config = function()

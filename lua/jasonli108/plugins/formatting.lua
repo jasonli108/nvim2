@@ -1,6 +1,7 @@
 return {
   "stevearc/conform.nvim",
   lazy = true,
+  optional = true,
   event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
   config = function()
     local conform = require("conform")
@@ -21,7 +22,11 @@ return {
         graphql = { "prettier" },
         lua = { "stylua" },
         python = { "isort", "black" },
+        -- Use the "*" filetype to run formatters on all filetypes.
         ["*"] = { "codespell" },
+        -- Use the "_" filetype to run formatters on filetypes that don't
+        ["_"] = { "trim_whitespace" },
+        -- have other formatters configured.
       },
       format_on_save = {
         lsp_fallback = true,
