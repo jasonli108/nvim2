@@ -28,13 +28,6 @@ local function extend_or_override(config, custom, ...)
 end
 
 return {
-  {
-    "williamboman/mason.nvim",
-    opts = function(_, opts)
-      opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "java-test", "java-debug-adapter" })
-    end,
-  },
   { "folke/which-key.nvim" },
   -- Add java to treesitter.
   {
@@ -54,7 +47,7 @@ return {
         "williamboman/mason.nvim",
         opts = function(_, opts)
           opts.ensure_installed = opts.ensure_installed or {}
-          vim.list_extend(opts.ensure_installed, { "java-test", "java-debug-adapter" })
+          vim.list_extend(opts.ensure_installed, { "java-test", "java-debug-adapter", "google-java-format" })
         end,
       },
     },
