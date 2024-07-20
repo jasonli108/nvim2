@@ -29,9 +29,9 @@ return {
         -- have other formatters configured.
       },
       format_on_save = {
-        lsp_fallback = true,
         async = false,
-        timeout_ms = 1000,
+        lsp_fallback =false, 
+        timeout_ms = 500,
       },
     })
 
