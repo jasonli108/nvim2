@@ -1,9 +1,26 @@
 return {
+   {
+    "rcasia/neotest-java",
+    -- init = function()
+    --   -- override the default keymaps.
+    --   -- needed until neotest-java is integrated in LazyVim
+    --   local keys = require("jasonli108.plugins.lsp.keymaps").get()
+    --   -- run test file
+    --   keys[#keys + 1] = {"<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, mode = "n" }
+    --   -- run nearest test
+    --   keys[#keys + 1] = {"<leader>tr", function() require("neotest").run.run() end, mode = "n" }
+    --   -- debug test file
+    --   keys[#keys + 1] = {"<leader>tD", function() require("neotest").run.run({ strategy = "dap" }) end, mode = "n" }
+    --   -- debug nearest test
+    --   keys[#keys + 1] = {"<leader>td", function() require("neotest").run.run({ vim.fn.expand("%"), strategy = "dap" }) end, mode = "n" }
+    -- end,
+  },
   "nvim-neotest/neotest",
   dependencies = { 
     "nvim-neotest/nvim-nio",
     "nvim-neotest/neotest-jest",
     "nvim-neotest/neotest-python",
+    "rcasia/neotest-java",
     "nvim-lua/plenary.nvim",
     "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter"
@@ -24,9 +41,15 @@ return {
           end,
         } ,
 
-    -- require("neotest-python")({
-    --   dap = { justMyCode = false },
-    -- }),
+    ["neotest-python"]={
+      dap = { justMyCode = false },
+    },
+
+    ["neotest-java"]={
+        ignore_wrapper = false, -- whether to ignore maven/gradle wrapper
+        junit_jar = nil,
+        -- default: .local/share/nvim/neotest-java/junit-platform-console-standalone-[version].jar
+    }
     -- require("neotest-plenary"),
     -- require("neotest-java"),
     -- require("neotest-jest"),
@@ -45,11 +68,7 @@ return {
     output = { open_on_run = true },
     quickfix = {
       open = function()
-        if LazyVim.has("trouble.nvim") then
           require("trouble").open({ mode = "quickfix", focus = false })
-        else
-          vim.cmd("copen")
-        end
       end,
     },
   },
