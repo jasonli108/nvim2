@@ -2,6 +2,8 @@ return {
   {
     event = "VeryLazy",
     "akinsho/bufferline.nvim",
+    branch ="main",
+    dependencies={"nvim-tree/nvim-web-devicons"},
     keys = {
       { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
