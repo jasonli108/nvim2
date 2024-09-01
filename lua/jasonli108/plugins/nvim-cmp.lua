@@ -6,12 +6,83 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
+    "rafamadriz/friendly-snippets", -- Optional: A collection of snippets
     {
       "L3MON4D3/LuaSnip",
       -- follow latest release.
       version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
       -- install jsregexp (optional!).
       build = "make install_jsregexp",
+      after = 'nvim-cmp',
+      config = function() 
+        require("jasonli108.snips")
+        -- require("luasnip.loaders.from_snipmate").lazy_load({ paths = { "~/.config/nvim/snippets" } })
+        -- local luasnip = require('luasnip')
+        --
+        -- -- Load friendly-snippets if you installed it
+        -- require('luasnip.loaders.from_vscode').load()
+
+        -- Define your custom snippets here (if any)
+        -- luasnip.snippets = {
+        --     all = {
+        --         luasnip.snippet("trig", {
+        --             luasnip.text_node("This is a snippet"),
+        --         }),
+        --     },
+        -- }
+        --
+        local ls = require('luasnip')
+
+        local M = {}
+
+        function M.expand_or_jump()
+          if ls.expand_or_jumpable() then
+            ls.expand_or_jump()
+          end
+        end
+
+        function M.jump_next()
+          if ls.jumpable(1) then
+            ls.jump(1)
+          end
+        end
+
+        function M.jump_prev()
+          if ls.jumpable(-1) then
+            ls.jump(-1)
+          end
+        end
+
+        function M.change_choice()
+          if ls.choice_active() then
+            ls.change_choice(1)
+          end
+        end
+
+        function M.reload_package(package_name)
+          for module_name, _ in pairs(package.loaded) do
+            if string.find(module_name, '^' .. package_name) then
+              package.loaded[module_name] = nil
+              require(module_name)
+            end
+          end
+        end
+
+        function M.refresh_snippets()
+          ls.cleanup()
+          M.reload_package('<update the module name here>')
+        end
+
+        local set = vim.keymap.set
+
+        local mode = { 'i', 's' }
+        local normal = { 'n' }
+
+        set(mode, '<c-i>', M.expand_or_jump)
+        set(mode, '<c-n>', M.jump_prev)
+        set(mode, '<c-l>', M.change_choice)
+        set(normal, ',r', M.refresh_snippets)
+      end,
     },
   },
   opts = function()
