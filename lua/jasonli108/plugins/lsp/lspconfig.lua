@@ -24,17 +24,41 @@ return {
     require('mason-lspconfig').setup({
       -- Install these LSPs automatically
       ensure_installed = {
-        -- 'bashls', -- requires npm to be installed
-        -- 'cssls', -- requires npm to be installed
-        -- 'html', -- requires npm to be installed
+        'bashls',
+        'cssls',
+        'html',
+        'gradle_ls',
+        'groovyls',
         'lua_ls',
-        -- 'jsonls', -- requires npm to be installed
+        'jdtls',
+        'jsonls',
         'lemminx',
         'marksman',
         'quick_lint_js',
-        -- 'tsserver', -- requires npm to be installed
-        -- 'yamlls', -- requires npm to be installed
+        'yamlls',
+        "tsserver",
+        "tailwindcss",
+        "svelte",
+        "lua_ls",
+        "graphql",
+        "emmet_ls",
+        "prismals",
       }
+    })
+
+    require('mason-tool-installer').setup({
+      -- Install these linters, formatters, debuggers automatically
+      ensure_installed = {
+        "prettier", -- prettier formatter
+        "stylua", -- lua formatter
+        "isort", -- python formatter
+        "black", -- python formatter
+        "pylint", -- python linter
+        "eslint_d", -- js linter
+        "pyright",
+        "debugpy",
+        "vscode",
+      },
     })
 
     local lspconfig = require('lspconfig')
