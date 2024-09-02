@@ -1,133 +1,94 @@
+-- Auto-completion / Snippets
 return {
-  "hrsh7th/nvim-cmp",
-  version = false, -- last release is way too old
-  event = "InsertEnter",
+  -- https://github.com/hrsh7th/nvim-cmp
+  'hrsh7th/nvim-cmp',
+  event = 'InsertEnter',
   dependencies = {
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-path",
-    "rafamadriz/friendly-snippets", -- Optional: A collection of snippets
-    {
-      "L3MON4D3/LuaSnip",
-      -- follow latest release.
+    -- Snippet engine & associated nvim-cmp source
+    -- https://github.com/L3MON4D3/LuaSnip
+    {'L3MON4D3/LuaSnip',
       version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
       -- install jsregexp (optional!).
       build = "make install_jsregexp",
       after = 'nvim-cmp',
       config = function() 
         require("jasonli108.snips")
-        -- require("luasnip.loaders.from_snipmate").lazy_load({ paths = { "~/.config/nvim/snippets" } })
-        -- local luasnip = require('luasnip')
-        --
-        -- -- Load friendly-snippets if you installed it
-        -- require('luasnip.loaders.from_vscode').load()
-
-        -- Define your custom snippets here (if any)
-        -- luasnip.snippets = {
-        --     all = {
-        --         luasnip.snippet("trig", {
-        --             luasnip.text_node("This is a snippet"),
-        --         }),
-        --     },
-        -- }
-        --
-        local ls = require('luasnip')
-
-        local M = {}
-
-        function M.expand_or_jump()
-          if ls.expand_or_jumpable() then
-            ls.expand_or_jump()
-          end
-        end
-
-        function M.jump_next()
-          if ls.jumpable(1) then
-            ls.jump(1)
-          end
-        end
-
-        function M.jump_prev()
-          if ls.jumpable(-1) then
-            ls.jump(-1)
-          end
-        end
-
-        function M.change_choice()
-          if ls.choice_active() then
-            ls.change_choice(1)
-          end
-        end
-
-        function M.reload_package(package_name)
-          for module_name, _ in pairs(package.loaded) do
-            if string.find(module_name, '^' .. package_name) then
-              package.loaded[module_name] = nil
-              require(module_name)
-            end
-          end
-        end
-
-        function M.refresh_snippets()
-          ls.cleanup()
-          M.reload_package('<update the module name here>')
-        end
-
-        local set = vim.keymap.set
-
-        local mode = { 'i', 's' }
-        local normal = { 'n' }
-
-        set(mode, '<c-i>', M.expand_or_jump)
-        set(mode, '<c-n>', M.jump_prev)
-        set(mode, '<c-l>', M.change_choice)
-        set(normal, ',r', M.refresh_snippets)
-      end,
+      end
     },
+    -- https://github.com/saadparwaiz1/cmp_luasnip
+    'saadparwaiz1/cmp_luasnip',
+
+    -- LSP completion capabilities
+    -- https://github.com/hrsh7th/cmp-nvim-lsp
+    'hrsh7th/cmp-nvim-lsp',
+
+    -- Additional user-friendly snippets
+    -- https://github.com/rafamadriz/friendly-snippets
+    'rafamadriz/friendly-snippets',
+    -- https://github.com/hrsh7th/cmp-buffer
+    'hrsh7th/cmp-buffer',
+    -- https://github.com/hrsh7th/cmp-path
+    'hrsh7th/cmp-path',
+    -- https://github.com/hrsh7th/cmp-cmdline
+    'hrsh7th/cmp-cmdline',
   },
-  opts = function()
-    vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
-    local cmp = require("cmp")
-    local defaults = require("cmp.config.default")()
-    return {
-      completion = {
-        completeopt = "menu,menuone,noinsert",
+  config = function()
+    local cmp = require('cmp')
+    local luasnip = require('luasnip')
+    require('luasnip.loaders.from_vscode').lazy_load()
+    luasnip.config.setup({})
+
+    cmp.setup({
+      snippet = {
+        expand = function(args)
+          luasnip.lsp_expand(args.body)
+        end,
       },
-      mapping = cmp.mapping.preset.insert({
-        ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-        ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete(),
-        ["<C-e>"] = cmp.mapping.abort(),
-        ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        ["<S-CR>"] = cmp.mapping.confirm({
+      completion = {
+        completeopt = 'menu,menuone,noinsert',
+      },
+      mapping = cmp.mapping.preset.insert {
+        ['<C-j>'] = cmp.mapping.select_next_item(), -- next suggestion
+        ['<C-k>'] = cmp.mapping.select_prev_item(), -- previous suggestion
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4), -- scroll backward
+        ['<C-f>'] = cmp.mapping.scroll_docs(4), -- scroll forward
+        ['<C-Space>'] = cmp.mapping.complete {}, -- show completion suggestions
+        ['<CR>'] = cmp.mapping.confirm {
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
-        }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        ["<C-CR>"] = function(fallback)
-          cmp.abort()
-          fallback()
-        end,
-      }),
-      sources = cmp.config.sources({
-        { name = "nvim_lsp" },
-        { name = "path" },
-      }, {
-        { name = "buffer" },
-      }),
-      experimental = {
-        ghost_text = {
-          hl_group = "CmpGhostText",
         },
+	-- Tab through suggestions or when a snippet is active, tab to the next argument
+        ['<Tab>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expand_or_locally_jumpable() then
+            luasnip.expand_or_jump()
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
+	-- Tab backwards through suggestions or when a snippet is active, tab to the next argument
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.locally_jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
       },
-      sorting = defaults.sorting,
-    }
+      sources = cmp.config.sources({
+        { name = "nvim_lsp" }, -- lsp 
+        { name = "luasnip" }, -- snippets
+        { name = "buffer" }, -- text within current buffer
+        { name = "path" }, -- file system paths
+      }),
+      window = {
+        -- Add borders to completions popups
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+      },
+    })
   end,
-  config = function(_, opts)
-    for _, source in ipairs(opts.sources) do
-      source.group_index = source.group_index or 1
-    end
-    require("cmp").setup(opts)
-  end,
-}
+ }
