@@ -7,7 +7,12 @@ return {
   dependencies = {
     -- LSP Management
     -- https://github.com/williamboman/mason.nvim
-    { 'williamboman/mason.nvim' },
+    { 'williamboman/mason.nvim',
+      dependencies = {
+        "williamboman/mason-lspconfig.nvim",
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
+      },
+    },
     -- https://github.com/williamboman/mason-lspconfig.nvim
     { 'williamboman/mason-lspconfig.nvim' },
 
@@ -20,7 +25,16 @@ return {
     { 'folke/neodev.nvim', opts = {} },
   },
   config = function ()
-    require('mason').setup()
+    require('mason').setup({
+      ui = {
+        icons = {
+          package_installed = "✓",
+          package_pending = "➜",
+          package_uninstalled = "✗",
+        },
+      },
+    })
+
     require('mason-lspconfig').setup({
       -- Install these LSPs automatically
       ensure_installed = {
@@ -43,7 +57,10 @@ return {
         "graphql",
         "emmet_ls",
         "prismals",
-      }
+        "pyright",
+      },
+      -- auto-install configured servers (with lspconfig)
+      automatic_installation = true, -- not the same as ensure_installed
     })
 
     require('mason-tool-installer').setup({
@@ -55,16 +72,17 @@ return {
         "black", -- python formatter
         "pylint", -- python linter
         "eslint_d", -- js linter
-        "pyright",
         "debugpy",
         "vscode",
       },
+      -- auto-install configured servers (with lspconfig)
+      automatic_installation = true, -- not the same as ensure_installed
     })
 
     local lspconfig = require('lspconfig')
     local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+
     local lsp_attach = function(client, bufnr)
-      -- Create your keybindings here...
     end
 
     -- Call setup on each LSP server
