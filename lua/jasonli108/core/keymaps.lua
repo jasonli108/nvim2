@@ -17,4 +17,3 @@ keymap.set("n", "<leader>qq", "<cmd>quitall<CR>", { desc = "quit all" })
 
 -- delete single character without copying into register
 keymap.set("n", "x", '"_x')
-
