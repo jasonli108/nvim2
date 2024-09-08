@@ -1,5 +1,5 @@
 return {}
-
+--
 -- return {
 --   "williamboman/mason.nvim",
 --   dependencies = {
@@ -29,18 +29,25 @@ return {}
 --     mason_lspconfig.setup({
 --       -- list of servers for mason to install
 --       ensure_installed = {
+--         'bashls',
+--         'cssls',
+--         'html',
+--         'gradle_ls',
+--         'groovyls',
+--         'lua_ls',
+--         'jdtls',
+--         'jsonls',
+--         'lemminx',
+--         'marksman',
+--         'quick_lint_js',
+--         'yamlls',
 --         "tsserver",
---         "html",
---         "cssls",
 --         "tailwindcss",
 --         "svelte",
---         "lua_ls",
 --         "graphql",
 --         "emmet_ls",
 --         "prismals",
 --         "pyright",
---         "jdtls",
---         "debugpy",
 --       },
 --       -- auto-install configured servers (with lspconfig)
 --       automatic_installation = true, -- not the same as ensure_installed
@@ -54,7 +61,12 @@ return {}
 --         "black", -- python formatter
 --         "pylint", -- python linter
 --         "eslint_d", -- js linter
+--         "debugpy",
+--         -- "vscode",
 --       },
+--
+--       -- auto-install configured servers (with lspconfig)
+--       automatic_installation = true, -- not the same as ensure_installed
 --     })
 --   end,
 -- }

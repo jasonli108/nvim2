@@ -39,14 +39,13 @@ return {
     vim.g.neo_tree_remove_legacy_commands = true
   end,
   opts = {
-    sources = { "filesystem", "buffers", "git_status", "document_symbols" },
-    open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline" },
-    filesystem = {
-      bind_to_cwd = false,
-      follow_current_file = { enabled = true },
-      use_libuv_file_watcher = true,
-      hijack_netrw_behavior = "open_current",
-    },
+    sources = { "filesystem", "buffers", "git_status" },
+      open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline" },
+      filesystem = {
+        bind_to_cwd = false,
+        follow_current_file = { enabled = true },
+        use_libuv_file_watcher = true,
+      },
     commands = {
       parent_or_close = function(state)
         local node = state.tree:get_node()

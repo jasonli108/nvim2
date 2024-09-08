@@ -23,6 +23,8 @@ return {
     -- Additional lua configuration, makes nvim stuff amazing!
     -- https://github.com/folke/neodev.nvim
     { 'folke/neodev.nvim', opts = {} },
+    -- { 'ibhagwan/fzf-lua' },
+    { 'folke/trouble.nvim'}
   },
   config = function ()
     require('mason').setup({
@@ -53,11 +55,11 @@ return {
         "tsserver",
         "tailwindcss",
         "svelte",
-        "lua_ls",
         "graphql",
         "emmet_ls",
         "prismals",
         "pyright",
+        "ruff_lsp"
       },
       -- auto-install configured servers (with lspconfig)
       automatic_installation = true, -- not the same as ensure_installed
@@ -78,10 +80,14 @@ return {
       automatic_installation = true, -- not the same as ensure_installed
     })
 
+    -- vim.lsp.set_log_level("DEBUG")  -- Options: "ERROR", "WARN", "INFO", "DEBUG"
+
     local lspconfig = require('lspconfig')
+    -- Configure logging directory
     local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
     local lsp_attach = function(client, bufnr)
+
     end
 
     -- Call setup on each LSP server
@@ -90,17 +96,27 @@ return {
         lspconfig[server_name].setup({
           on_attach = lsp_attach,
           capabilities = lsp_capabilities,
+          root_dir = function()
+              return vim.fn.getcwd()
+          end,
         })
       end
     })
 
-    -- Lua LSP settings
+    -- -- Lua LSP settings
     lspconfig.lua_ls.setup {
       settings = {
         Lua = {
           diagnostics = {
             -- Get the language server to recognize the `vim` global
             globals = {'vim'},
+          },
+          workspace = {
+            -- make language server aware of runtime files
+            library = {
+              [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+              [vim.fn.stdpath("config") .. "/lua"] = true,
+            },
           },
         },
       },
