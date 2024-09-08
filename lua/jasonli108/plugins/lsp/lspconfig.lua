@@ -52,7 +52,7 @@ return {
         'marksman',
         'quick_lint_js',
         'yamlls',
-        "tsserver",
+        -- "tsserver",
         "tailwindcss",
         "svelte",
         "graphql",

@@ -1,7 +1,6 @@
 return {
   "stevearc/conform.nvim",
   lazy = true,
-  optional = true,
   event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
   config = function()
     local conform = require("conform")
@@ -32,7 +31,7 @@ return {
         async = false,
         lsp_fallback =false, 
         timeout_ms = 500,
-      },
+      }
     })
 
     vim.keymap.set({ "n", "v" }, "<leader>mp", function()
