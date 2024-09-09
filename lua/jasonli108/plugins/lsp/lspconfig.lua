@@ -24,7 +24,6 @@ return {
     -- Additional lua configuration, makes nvim stuff amazing!
     -- https://github.com/folke/neodev.nvim
     { "folke/neodev.nvim", opts = {} },
-    -- { 'ibhagwan/fzf-lua' },
     { "folke/trouble.nvim" },
   },
   config = function()
