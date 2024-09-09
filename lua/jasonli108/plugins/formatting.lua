@@ -31,7 +31,7 @@ return {
         async = false,
         lsp_fallback =false, 
         timeout_ms = 500,
-      }
+      },
     })
 
     vim.keymap.set({ "n", "v" }, "<leader>mp", function()
