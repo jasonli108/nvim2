@@ -20,7 +20,6 @@ function wants(opts)
   return false
 end
 
-
 if lazyvim_docs then
   -- LSP Server to use for Python.
   -- Set to "basedpyright" to use basedpyright instead of pyright.
@@ -77,10 +76,24 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = function(_, opts)
+      local lspconfig = require("lspconfig")
+      -- Configure logging directory
+      local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local lsp_attach = function(client, bufnr) end
       local servers = { "pyright", "basedpyright", "ruff", "ruff_lsp", ruff, lsp }
       for _, server in ipairs(servers) do
         opts.servers[server] = opts.servers[server] or {}
         opts.servers[server].enabled = server == lsp or server == ruff
+      end
+
+      for _, servername in ipairs({ "pyright", "ruff_lsp" }) do
+        lspconfig[servername].setup({
+          on_attach = lsp_attach,
+          capabilities = lsp_capabilities,
+          root_dir = function()
+            return vim.fn.getcwd()
+          end,
+        })
       end
     end,
   },
@@ -111,8 +124,8 @@ return {
         { "<leader>dPc", function() require('dap-python').test_class() end, desc = "Debug Class", ft = "python" },
       },
       config = function()
-        local path ="~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
-        require('dap-python').setup(path)
+        local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+        require("dap-python").setup(path)
       end,
     },
   },
