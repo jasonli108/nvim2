@@ -37,49 +37,6 @@ return {
       },
     })
 
-    require("mason-lspconfig").setup({
-      -- Install these LSPs automatically
-      ensure_installed = {
-        "bashls",
-        "cssls",
-        "html",
-        "gradle_ls",
-        "groovyls",
-        "lua_ls",
-        "jdtls",
-        "jsonls",
-        "lemminx",
-        "marksman",
-        "quick_lint_js",
-        "yamlls",
-        -- "tsserver",
-        "tailwindcss",
-        "svelte",
-        "graphql",
-        "emmet_ls",
-        "prismals",
-        "pyright",
-        "ruff_lsp",
-      },
-      -- auto-install configured servers (with lspconfig)
-      automatic_installation = true, -- not the same as ensure_installed
-    })
-
-    require("mason-tool-installer").setup({
-      -- Install these linters, formatters, debuggers automatically
-      ensure_installed = {
-        "prettier", -- prettier formatter
-        "stylua", -- lua formatter
-        "isort", -- python formatter
-        "black", -- python formatter
-        "pylint", -- python linter
-        "eslint_d", -- js linter
-        "debugpy",
-      },
-      -- auto-install configured servers (with lspconfig)
-      automatic_installation = true, -- not the same as ensure_installed
-    })
-
     -- vim.lsp.set_log_level("DEBUG")  -- Options: "ERROR", "WARN", "INFO", "DEBUG"
 
     local lspconfig = require("lspconfig")
