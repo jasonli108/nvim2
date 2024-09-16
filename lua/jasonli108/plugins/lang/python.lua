@@ -13,20 +13,20 @@ function wants(opts)
       end
     end
   end
-  if opts.root then
-    opts.root = type(opts.root) == "string" and { opts.root } or opts.root
-    return #LazyVim.root.detectors.pattern(M.buf, opts.root) > 0
-  end
+  -- if opts.root then
+  --   opts.root = type(opts.root) == "string" and { opts.root } or opts.root
+  --   return #LazyVim.root.detectors.pattern(M.buf, opts.root) > 0
+  -- end
   return false
 end
 
-if lazyvim_docs then
-  -- LSP Server to use for Python.
-  -- Set to "basedpyright" to use basedpyright instead of pyright.
-  vim.g.lazyvim_python_lsp = "pyright"
-  -- Set to "ruff_lsp" to use the old LSP implementation version.
-  vim.g.lazyvim_python_ruff = "ruff"
-end
+-- if lazyvim_docs then
+-- LSP Server to use for Python.
+-- Set to "basedpyright" to use basedpyright instead of pyright.
+vim.g.lazyvim_python_lsp = "pyright"
+-- Set to "ruff_lsp" to use the old LSP implementation version.
+vim.g.lazyvim_python_ruff = "ruff"
+-- end
 
 local lsp = vim.g.lazyvim_python_lsp or "pyright"
 local ruff = vim.g.lazyvim_python_ruff or "ruff"
@@ -104,7 +104,8 @@ return {
         ["neotest-python"] = {
           -- Here you can specify the settings for the adapter, i.e.
           runner = "pytest",
-          python = "~/venv/bin/python",
+          -- python = "~/venv/bin/python",
+          python = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python",
         },
       },
     },
@@ -125,22 +126,21 @@ return {
       end,
     },
   },
-
   {
     "linux-cultist/venv-selector.nvim",
-    branch = "regexp", -- Use this branch for the new version
-    cmd = "VenvSelect",
-    enabled = false,
+    dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim", "mfussenegger/nvim-dap-python" },
     opts = {
-      settings = {
-        options = {
-          notify_user_on_venv_activation = true,
-        },
-      },
+      -- Your options go here
+      -- name = "venv",
+      -- auto_refresh = false
     },
-    --  Call config for python files and load the cached venv automatically
-    ft = "python",
-    keys = { { "<leader>cv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv", ft = "python" } },
+    event = "VeryLazy", -- Optional: needed only if you want to type `:VenvSelect` without a keymapping
+    keys = {
+      -- Keymap to open VenvSelector to pick a venv.
+      { "<leader>vs", "<cmd>VenvSelect<cr>" },
+      -- Keymap to retrieve the venv from a cache (the one previously used for the same project directory).
+      { "<leader>vc", "<cmd>VenvSelectCached<cr>" },
+    },
   },
 
   {
@@ -161,4 +161,11 @@ return {
       },
     },
   },
+
+  -- -- need to install this the following package with pip
+  -- -- pip install ninja rst
+  -- {
+  --   "nvim-treesitter/nvim-treesitter",
+  --   opts = { ensure_installed = { "ninja", "rst" } },
+  -- },
 }
