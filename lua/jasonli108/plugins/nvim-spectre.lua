@@ -5,7 +5,7 @@ return {
   opts = { open_cmd = "noswapfile vnew" },
   keys = {
     {
-      "<leader>sr",
+      "<leader>rr",
       function()
         require("spectre").open()
       end,
