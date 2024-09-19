@@ -36,9 +36,8 @@ return {
         },
       },
     })
-
-    -- vim.lsp.set_log_level("DEBUG")  -- Options: "ERROR", "WARN", "INFO", "DEBUG"
-
+    vim.lsp.set_log_level("DEBUG") -- Options: "ERROR", "WARN", "INFO", "DEBUG"
+    -- vim.lsp.set_log_level = vim.log.levels.DEBUG
     local lspconfig = require("lspconfig")
     -- Configure logging directory
     local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()

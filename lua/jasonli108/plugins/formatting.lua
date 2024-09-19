@@ -7,22 +7,22 @@ return {
 
     conform.setup({
       formatters_by_ft = {
+        javascript = { "prettierd", "eslint_d" },
+        typescript = { "prettierd", "eslint_d" },
+        javascriptreact = { "prettierd", "eslint_d" },
+        typescriptreact = { "prettierd", "eslint_d" },
+        svelte = { "prettierd" },
+        css = { "prettierd" },
+        html = { "prettierd" },
+        json = { "prettierd" },
+        yaml = { "prettierd" },
+        markdown = { "prettierd" },
+        graphql = { "prettierd" },
+        lua = { "stylua" },
+        python = { "isort", "black" },
         c = { "clang-format" },
         cpp = { "clang-format" },
         java = { "google-java-format" },
-        javascript = { "prettier" },
-        typescript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescriptreact = { "prettier" },
-        svelte = { "prettier" },
-        css = { "prettier" },
-        html = { "prettier" },
-        json = { "prettier" },
-        yaml = { "prettier" },
-        markdown = { "prettier" },
-        graphql = { "prettier" },
-        lua = { "stylua" },
-        python = { "isort", "black" },
         -- Use the "*" filetype to run formatters on all filetypes.
         ["*"] = { "codespell" },
         -- Use the "_" filetype to run formatters on filetypes that don't
@@ -31,8 +31,8 @@ return {
       },
       format_on_save = {
         async = false,
-        lsp_fallback = false,
-        timeout_ms = 500,
+        lsp_fallback = true,
+        timeout_ms = 8000,
       },
     })
 
@@ -40,7 +40,7 @@ return {
       conform.format({
         lsp_fallback = true,
         async = false,
-        timeout_ms = 1000,
+        timeout_ms = 8000,
       })
     end, { desc = "Format file or range (in visual mode)" })
   end,

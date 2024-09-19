@@ -56,7 +56,7 @@ return {
         { "golangci-lint", version = "v1.47.0" },
         -- you can turn off/on auto_update per tool
         { "bash-language-server", auto_update = true },
-        "prettier", -- prettier formatter
+        "prettierd", -- prettierd formatter
         "stylua", -- lua formatter
         "isort", -- python formatter
         "black", -- python formatter
@@ -65,6 +65,7 @@ return {
         "clang-format",
         "shfmt",
         "misspell",
+        "eslint_d",
       },
     })
   end,
