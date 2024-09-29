@@ -32,6 +32,8 @@ return {
     "hrsh7th/cmp-path",
     -- https://github.com/hrsh7th/cmp-cmdline
     "hrsh7th/cmp-cmdline",
+    -- https://github.com/hrsh7th/cmp-nvim-lsp-signature-help
+    "hrsh7th/cmp-nvim-lsp-signature-help",
   },
   config = function()
     local cmp = require("cmp")
@@ -80,6 +82,7 @@ return {
         end, { "i", "s" }),
       }),
       sources = cmp.config.sources({
+        { name = "nvim_lsp_signature_help" },
         { name = "nvim_lsp" }, -- lsp
         { name = "luasnip" }, -- snippets
         { name = "buffer" }, -- text within current buffer
@@ -92,11 +95,12 @@ return {
       },
 
       formatting = {
+        expandable_indicator = true,
         fields = { "menu", "abbr", "kind" },
         format = function(entry, item)
           local menu_icon = {
-            nvim_lsp = "λ",
-            luasnip = "⋗",
+            nvim_lsp = "⋗",
+            luasnip = "λ",
             buffer = "Ω",
             path = "🖫",
           }

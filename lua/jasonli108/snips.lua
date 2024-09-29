@@ -20,9 +20,13 @@ ls.add_snippets("python", {
 ls.add_snippets("python", {
   s({ trig = "mainss", name = "main with ss", desc = "main with solution" }, {
     t('if __name__ == "__main__":'),
-    t({ "", "  " }),
-    i(0, "ss = Solution() "),
-    t({ "", "  " }),
-    i(0, "assert ss.function==expect_result"),
+    t({ "", "    " }),
+    i(1, "ss = Solution() "),
+    t({ "", "    " }),
+    i(1, "expect_result = some val"),
+    t({ "", "    " }),
+    i(1, "actual_result = ss.function"),
+    t({ "", "    " }),
+    i(1, "assert actual_result == expect_result"),
   }),
 })
