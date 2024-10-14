@@ -66,6 +66,7 @@ return {
         "shfmt",
         "misspell",
         "eslint_d",
+        "debugpy"
       },
     })
   end,

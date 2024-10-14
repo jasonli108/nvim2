@@ -135,6 +135,7 @@ return {
       -- auto_refresh = false
     },
     event = "VeryLazy", -- Optional: needed only if you want to type `:VenvSelect` without a keymapping
+    ft = "python",
     keys = {
       -- Keymap to open VenvSelector to pick a venv.
       { "<leader>vs", "<cmd>VenvSelect<cr>" },
@@ -162,10 +163,10 @@ return {
     },
   },
 
-  -- -- need to install this the following package with pip
+  -- -- need to install this the following package with pip if needed, but it seems to work fine without it
   -- -- pip install ninja rst
-  -- {
-  --   "nvim-treesitter/nvim-treesitter",
-  --   opts = { ensure_installed = { "ninja", "rst" } },
-  -- },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = { ensure_installed = { "ninja", "rst" } },
+  },
 }
