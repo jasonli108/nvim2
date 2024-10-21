@@ -40,7 +40,7 @@ return {
         "marksman",
         "quick_lint_js",
         "yamlls",
-        "tsserver",
+        "ts_ls",
         "tailwindcss",
         "svelte",
         "graphql",
@@ -66,6 +66,7 @@ return {
         "shfmt",
         "misspell",
         "eslint_d",
+        "debugpy"
       },
     })
   end,

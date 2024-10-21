@@ -74,6 +74,8 @@ return {
         "xml",
         "yaml",
         "vim",
+        "ninja",
+        "rst",
       },
       incremental_selection = {
         enable = true,

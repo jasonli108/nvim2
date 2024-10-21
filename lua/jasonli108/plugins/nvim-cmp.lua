@@ -87,6 +87,7 @@ return {
         { name = "luasnip" }, -- snippets
         { name = "buffer" }, -- text within current buffer
         { name = "path" }, -- file system paths
+        { name = "codeium" }, -- codeium 
       }),
       window = {
         -- Add borders to completions popups

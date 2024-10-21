@@ -81,6 +81,10 @@ return {
     local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
     local workspace_dir = vim.env.HOME .. '/jdtls-workspace/' .. project_name
 
+        -- Where are the config and workspace dirs for a project?
+    local jdtls_config_dir = vim.fn.stdpath("cache") .. "/jdtls/" .. project_name .. "/config"
+    local jdtls_workspace_dir = vim.fn.stdpath("cache") .. "/jdtls/" .. project_name .. "/workspace"
+
     -- Needed for debugging
     local bundles = {
       vim.fn.glob(vim.env.HOME .. '/.local/share/nvim/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin.jar'),
@@ -91,26 +95,12 @@ return {
 
     -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
     local config = {
-      -- The command that starts the language server
-      -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
       cmd = {
-        'java',
-        '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-        '-Dosgi.bundles.defaultStartLevel=4',
-        '-Declipse.product=org.eclipse.jdt.ls.core.product',
-        '-Dlog.protocol=true',
-        '-Dlog.level=ALL',
-        '-javaagent:' .. vim.env.HOME .. '/.local/share/nvim/mason/share/jdtls/lombok.jar',
-        '-Xmx4g',
-        '--add-modules=ALL-SYSTEM',
-        '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-        '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
 
-        -- Eclipse jdtls location
-        '-jar', vim.env.HOME .. '/.local/share/nvim/mason/share/jdtls/plugins/org.eclipse.equinox.launcher.jar',
-        -- TODO Update this to point to the correct jdtls subdirectory for your OS (config_linux, config_mac, config_win, etc)
-        '-configuration', vim.env.HOME .. '/.local/share/nvim/mason/packages/jdtls/config_linux',
-        '-data', workspace_dir
+        '' .. vim.env.HOME .. '/.local/share/nvim/mason/packages/jdtls/jdtls',
+        '--jvm-arg=-javaagent:' .. vim.env.HOME .. '/.local/share/nvim/mason/packages/jdtls/lombok.jar',
+        '-configuration', vim.env.HOME .. jdtls_config_dir,
+        '-data', jdtls_workspace_dir
       },
 
       -- This is the default if not provided, you can remove it. Or adjust as needed.
@@ -122,7 +112,7 @@ return {
       settings = {
         java = {
           -- TODO Replace this with the absolute path to your main java version (JDK 17 or higher)
-          home = '/usr/lib/jvm/java-17-openjdk-amd64',
+          home = '/usr/lib/jvm/java-22-openjdk-amd64',
           eclipse = {
             downloadSources = true,
           },
@@ -132,12 +122,12 @@ return {
             -- The runtime name parameters need to match specific Java execution environments.  See https://github.com/tamago324/nlsp-settings.nvim/blob/2a52e793d4f293c0e1d61ee5794e3ff62bfbbb5d/schemas/_generated/jdtls.json#L317-L334
             runtimes = {
               {
-                name = "JavaSE-17",
-                path = "/usr/lib/jvm/java-17-openjdk-amd64",
+                name = "JavaSE-22",
+                path = "/usr/lib/jvm/java-22-openjdk-amd64",
               },
               {
-                name = "JavaSE-21",
-                path = "/usr/lib/jvm/java-21-openjdk-amd64",
+                name = "JavaSE-23",
+                path = "/usr/lib/jvm/java-23-openjdk-amd64",
               },
 
             }
@@ -206,14 +196,44 @@ return {
       },
     }
 
+
+      local function attach_jdtls()
+        local fname = vim.api.nvim_buf_get_name(0)
+
+        -- Configuration can be augmented and overridden by opts.jdtls
+        local nconfig = extend_or_override({
+          cmd = config.cmd,
+          root_dir = config.root_dir,
+          init_options = {
+            bundles = bundles,
+          },
+          settings = config.settings,
+          -- enable CMP capabilities
+          capabilities = config.capabilities,
+        }, {})
+
+        -- Existing server will be reused if the root_dir matches.
+        require("jdtls").start_or_attach(nconfig)
+        -- not need to require("jdtls.setup").add_commands(), start automatically adds commands
+      end
+
     -- Needed for debugging
     config['on_attach'] = function(client, bufnr)
       jdtls.setup_dap({ hotcodereplace = 'auto' })
       require('jdtls.dap').setup_dap_main_class_configs()
     end
 
+
+      -- Attach the jdtls for each java buffer. HOWEVER, this plugin loads
+      -- depending on filetype, so this autocmd doesn't run for the first file.
+      -- For that, we call directly below.
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = java_filetypes,
+        callback = attach_jdtls,
+      })
+
+
     -- This starts a new client & server, or attaches to an existing client & server based on the `root_dir`.
-    jdtls.start_or_attach(config)
     end,
   },
 }

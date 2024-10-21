@@ -1,3 +1,5 @@
+# nvim plugin needs java, goland-go, nodejs, npm, python3,fzf 
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({

@@ -29,11 +29,11 @@ return {
         ["_"] = { "trim_whitespace" },
         -- have other formatters configured.
       },
-      format_on_save = {
-        async = false,
-        lsp_fallback = true,
-        timeout_ms = 8000,
-      },
+      -- format_on_save = {
+      --   async = false,
+      --   lsp_fallback = true,
+      --   timeout_ms = 8000,
+      -- },
     })
 
     vim.keymap.set({ "n", "v" }, "<leader>mp", function()
